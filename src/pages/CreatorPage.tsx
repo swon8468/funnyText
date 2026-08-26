@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, RefreshCw, Volume2, Palette, Smile, Send, Wand2 } from 'lucide-react';
 import { GiftBox3D } from '../components/GiftBox3D';
+import { RoamingIcons } from '../components/RoamingIcons';
 import { ShareModal } from '../components/ShareModal';
 import {
   BOX_THEMES,
@@ -78,6 +79,9 @@ export const CreatorPage: React.FC = () => {
 
   return (
     <div className={`min-h-screen bg-gradient-to-b ${currentTheme.bgGradient} text-white transition-colors duration-500 pb-28 lg:pb-12`}>
+      {/* Roaming Icons when preview is opened */}
+      <RoamingIcons active={previewIsOpen} mainEmoji={selectedEmoji} />
+
       {/* Top Navbar */}
       <header className="sticky top-0 z-30 backdrop-blur-xl bg-black/40 border-b border-white/10 px-4 py-3.5">
         <div className="max-w-5xl mx-auto flex items-center justify-between">

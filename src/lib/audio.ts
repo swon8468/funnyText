@@ -19,17 +19,17 @@ function getAudioContext(): AudioContext | null {
 }
 
 /**
- * Super dramatic accelerating Drum Roll + Synth Riser
+ * Extended Suspense Drum Roll + Heartbeat + Accelerating Snare + High Tension Riser (4.8s ~ 5.0s)
  */
-export function playDrumRoll(durationMs: number = 700): void {
+export function playDrumRoll(durationMs: number = 4800): void {
   const ctx = getAudioContext();
   if (!ctx) return;
 
   const now = ctx.currentTime;
   const durSec = durationMs / 1000;
 
-  // 1. Snare Noise Riser
-  const bufferSize = ctx.sampleRate * durSec;
+  // 1. Continuous Snare Noise Riser (accelerating & crescendoing)
+  const bufferSize = Math.floor(ctx.sampleRate * durSec);
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = buffer.getChannelData(0);
   let b0 = 0, b1 = 0, b2 = 0;
@@ -38,7 +38,7 @@ export function playDrumRoll(durationMs: number = 700): void {
     b0 = 0.99886 * b0 + white * 0.0555179;
     b1 = 0.99332 * b1 + white * 0.0750759;
     b2 = 0.96900 * b2 + white * 0.153852;
-    data[i] = (b0 + b1 + b2 + white * 0.5362) * 0.2;
+    data[i] = (b0 + b1 + b2 + white * 0.5362) * 0.22;
   }
 
   const noiseNode = ctx.createBufferSource();
@@ -46,14 +46,14 @@ export function playDrumRoll(durationMs: number = 700): void {
 
   const filter = ctx.createBiquadFilter();
   filter.type = 'bandpass';
-  filter.frequency.setValueAtTime(600, now);
-  filter.frequency.exponentialRampToValueAtTime(2400, now + durSec);
-  filter.Q.setValueAtTime(4, now);
+  filter.frequency.setValueAtTime(400, now);
+  filter.frequency.exponentialRampToValueAtTime(3200, now + durSec * 0.95);
+  filter.Q.setValueAtTime(3.5, now);
 
   const gain = ctx.createGain();
-  gain.gain.setValueAtTime(0.08, now);
-  gain.gain.exponentialRampToValueAtTime(0.6, now + durSec * 0.92);
-  gain.gain.linearRampToValueAtTime(0.01, now + durSec);
+  gain.gain.setValueAtTime(0.04, now);
+  gain.gain.exponentialRampToValueAtTime(0.7, now + durSec * 0.94);
+  gain.gain.linearRampToValueAtTime(0.001, now + durSec);
 
   noiseNode.connect(filter);
   filter.connect(gain);
@@ -62,45 +62,69 @@ export function playDrumRoll(durationMs: number = 700): void {
   noiseNode.start(now);
   noiseNode.stop(now + durSec);
 
-  // 2. High-speed accelerating tom machine gun
-  const tapCount = 18;
+  // 2. High-density drum hits accelerating exponentially (45 taps over 5 seconds)
+  const tapCount = 42;
   for (let i = 0; i < tapCount; i++) {
     const progress = i / tapCount;
-    // Exponential time curve so tempo accelerates frantically
-    const tapTime = now + Math.pow(progress, 1.4) * durSec;
+    // Exponential acceleration: slow at first, insanely fast at the end
+    const tapTime = now + Math.pow(progress, 2.0) * (durSec * 0.96);
     const osc = ctx.createOscillator();
     const tapGain = ctx.createGain();
 
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(150 + progress * 60, tapTime);
-    osc.frequency.exponentialRampToValueAtTime(45, tapTime + 0.035);
+    osc.frequency.setValueAtTime(120 + progress * 90, tapTime);
+    osc.frequency.exponentialRampToValueAtTime(38, tapTime + 0.04);
 
-    const volume = 0.1 + progress * 0.35;
+    const volume = 0.1 + progress * 0.45;
     tapGain.gain.setValueAtTime(volume, tapTime);
-    tapGain.gain.exponentialRampToValueAtTime(0.001, tapTime + 0.035);
+    tapGain.gain.exponentialRampToValueAtTime(0.001, tapTime + 0.04);
 
     osc.connect(tapGain);
     tapGain.connect(ctx.destination);
 
     osc.start(tapTime);
-    osc.stop(tapTime + 0.04);
+    osc.stop(tapTime + 0.045);
   }
 
-  // 3. Tension Riser Pitch Sweep
+  // 3. Heartbeat Sub Thumps in the first 2.5 seconds
+  const heartBeats = [0.0, 0.2, 0.8, 1.0, 1.6, 1.8, 2.3, 2.5];
+  heartBeats.forEach((timeOffset) => {
+    if (timeOffset < durSec * 0.6) {
+      const hbTime = now + timeOffset;
+      const osc = ctx.createOscillator();
+      const hbGain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(75, hbTime);
+      osc.frequency.exponentialRampToValueAtTime(30, hbTime + 0.12);
+
+      hbGain.gain.setValueAtTime(0.4, hbTime);
+      hbGain.gain.exponentialRampToValueAtTime(0.001, hbTime + 0.12);
+
+      osc.connect(hbGain);
+      hbGain.connect(ctx.destination);
+
+      osc.start(hbTime);
+      osc.stop(hbTime + 0.13);
+    }
+  });
+
+  // 4. Tension Riser Pitch Siren
   const riser = ctx.createOscillator();
   const riserGain = ctx.createGain();
   riser.type = 'sawtooth';
-  riser.frequency.setValueAtTime(110, now);
-  riser.frequency.exponentialRampToValueAtTime(880, now + durSec);
+  riser.frequency.setValueAtTime(80, now + 1.2);
+  riser.frequency.exponentialRampToValueAtTime(1400, now + durSec * 0.96);
 
-  riserGain.gain.setValueAtTime(0.02, now);
-  riserGain.gain.exponentialRampToValueAtTime(0.2, now + durSec * 0.95);
+  riserGain.gain.setValueAtTime(0.001, now);
+  riserGain.gain.setValueAtTime(0.02, now + 1.2);
+  riserGain.gain.exponentialRampToValueAtTime(0.35, now + durSec * 0.94);
   riserGain.gain.linearRampToValueAtTime(0.001, now + durSec);
 
   riser.connect(riserGain);
   riserGain.connect(ctx.destination);
 
-  riser.start(now);
+  riser.start(now + 1.2);
   riser.stop(now + durSec);
 }
 
@@ -145,6 +169,31 @@ export function playBoxPop(): void {
   nGain.connect(ctx.destination);
 
   noise.start(now);
+}
+
+/**
+ * Quick high-pitch cute pop for tapping emojis
+ */
+export function playPopSnippet(): void {
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(880 + Math.random() * 400, now);
+  osc.frequency.exponentialRampToValueAtTime(300, now + 0.08);
+
+  gain.gain.setValueAtTime(0.3, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(now);
+  osc.stop(now + 0.085);
 }
 
 /**

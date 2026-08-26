@@ -522,16 +522,30 @@ export const GiftBox3D: React.FC<GiftBox3DProps> = ({
     };
   }, [themeId, currentTheme, updateBoardTexture]);
 
-  // Trigger Extreme Open Sequence
+  const [suspenseText, setSuspenseText] = useState<string>('🎁 선물 개봉 시작... 🥁');
+
+  // Trigger Extreme 5-Second Open Sequence
   const triggerOpen = useCallback(() => {
     if (animationState !== 'idle' || !interactive) return;
 
-    // 1. Shake phase with accelerating Drum Roll + Riser
+    const suspenseMs = 4800;
     setAnimationState('shaking');
-    playDrumRoll(650);
+    playDrumRoll(suspenseMs);
 
-    // 2. EXPLOSION PHASE
+    // Dynamic suspense text updates over 5 seconds
+    setSuspenseText('🎁 선물 개봉 시작... 🥁');
+    const t1 = setTimeout(() => setSuspenseText('🥁 두구두구두구두구... 💥'), 1200);
+    const t2 = setTimeout(() => setSuspenseText('⚡ 과연 답변은...?! 🔥'), 2500);
+    const t3 = setTimeout(() => setSuspenseText('💥 3... 2... 1... 💣'), 3800);
+    const t4 = setTimeout(() => setSuspenseText('🔥 콰아아아앙!!!! 💥'), 4600);
+
+    // EXPLOSION PHASE at 4.8s
     setTimeout(() => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+
       setAnimationState('opened');
 
       // Trigger Screen Flash & Shockwave
@@ -539,15 +553,15 @@ export const GiftBox3D: React.FC<GiftBox3DProps> = ({
       setShowShockwave(true);
       setShowSpeedLines(true);
 
-      setTimeout(() => setShowFlash(false), 600);
-      setTimeout(() => setShowShockwave(false), 900);
-      setTimeout(() => setShowSpeedLines(false), 2400);
+      setTimeout(() => setShowFlash(false), 700);
+      setTimeout(() => setShowShockwave(false), 1200);
+      setTimeout(() => setShowSpeedLines(false), 3000);
 
       // Trigger Audio & Visuals
       triggerSoundEffect(soundId);
       triggerVisualEffect(effectId);
       onOpenChange?.(true);
-    }, 650);
+    }, suspenseMs);
   }, [animationState, interactive, soundId, effectId, onOpenChange]);
 
   // Sync external isOpen prop changes
@@ -579,14 +593,14 @@ export const GiftBox3D: React.FC<GiftBox3DProps> = ({
       {/* Massive Expanding Shockwave Ring */}
       {showShockwave && (
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border-8 animate-shockwave pointer-events-none z-40"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full border-[12px] animate-shockwave pointer-events-none z-40"
           style={{ borderColor: currentTheme.ribbonColor }}
         />
       )}
 
       {/* Anime Action / Speed Lines Overlay */}
       {showSpeedLines && (
-        <div className="fixed inset-0 pointer-events-none z-30 speed-lines opacity-80 animate-spin-rays" />
+        <div className="fixed inset-0 pointer-events-none z-30 speed-lines opacity-90 animate-spin-rays" />
       )}
 
       {/* 3D Canvas Mount */}
@@ -599,16 +613,16 @@ export const GiftBox3D: React.FC<GiftBox3DProps> = ({
 
       {/* Interactive Helper Overlay (when idle) */}
       {interactive && animationState === 'idle' && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-500/90 to-yellow-400/90 backdrop-blur-md border border-white/30 text-black text-sm font-black tracking-wide shadow-2xl flex items-center gap-2 animate-bounce">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-500/95 to-yellow-400/95 backdrop-blur-md border border-white/40 text-black text-sm font-black tracking-wide shadow-2xl flex items-center gap-2 animate-bounce">
           <span className="text-lg">🎁</span>
-          <span>탭해서 선물상자 열기!</span>
+          <span>탭해서 선물 개봉하기!</span>
         </div>
       )}
 
-      {/* Shaking indicator */}
+      {/* 5-Second Shaking indicator with progressive text */}
       {animationState === 'shaking' && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-full bg-red-600/90 border border-yellow-300 backdrop-blur-md text-yellow-200 font-black text-base tracking-widest animate-pulse shadow-2xl">
-          💥 콰아아앙 충전 중... 🥁
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full bg-red-600/95 border-2 border-yellow-300 backdrop-blur-md text-yellow-200 font-black text-base tracking-wider animate-pulse shadow-2xl flex items-center gap-2">
+          <span>{suspenseText}</span>
         </div>
       )}
     </div>

@@ -180,7 +180,7 @@ export const GiftBox3D: React.FC<GiftBox3DProps> = ({
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     container.replaceChildren(renderer.domElement);
@@ -401,12 +401,12 @@ export const GiftBox3D: React.FC<GiftBox3DProps> = ({
     scene.add(shadowPlane);
 
     // Animation Loop Variables
-    const clock = new THREE.Clock();
+    const startTimestamp = performance.now();
     let openProgress = isOpen ? 1 : 0;
 
     const animate = () => {
       animationFrameId.current = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const elapsedTime = (performance.now() - startTimestamp) * 0.001;
 
       // Ambient particle rotation
       ambParticles.rotation.y = elapsedTime * 0.15;

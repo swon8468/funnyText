@@ -143,14 +143,7 @@ export const ViewerPage: React.FC<ViewerPageProps> = ({ token }) => {
               </button>
             </div>
           </div>
-        ) : (
-          /* Instructions when not yet opened */
-          <div className="text-center">
-            <p className="text-xs text-white/60 animate-pulse font-medium">
-              화면 속 선물상자를 탭하면 5초간 긴장감 넘치는 개봉이 시작됩니다! 🥁
-            </p>
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

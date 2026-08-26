@@ -78,35 +78,12 @@ export const CreatorPage: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b ${currentTheme.bgGradient} text-white transition-colors duration-500 pb-28 lg:pb-12`}>
+    <div className={`min-h-screen bg-gradient-to-b ${currentTheme.bgGradient} text-white transition-colors duration-500 py-6 sm:py-8`}>
       {/* Roaming Icons when preview is opened */}
       <RoamingIcons active={previewIsOpen} mainEmoji={selectedEmoji} />
 
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-30 backdrop-blur-xl bg-black/40 border-b border-white/10 px-4 py-3.5">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 to-red-500 flex items-center justify-center text-xl shadow-lg shadow-red-500/20">
-              🎁
-            </div>
-            <div>
-              <h1 className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-                funnyText
-              </h1>
-              <p className="text-[10px] text-slate-400 -mt-0.5">3D 비밀 선물상자 생성기</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline-block text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-              🔒 DB 없이 100% 암호화
-            </span>
-          </div>
-        </div>
-      </header>
-
       {/* Main Content Area */}
-      <main className="max-w-5xl mx-auto px-4 py-6">
+      <main className="max-w-5xl mx-auto px-4">
         {/* Preset Templates Carousel / Bar */}
         <section className="mb-8">
           <div className="flex items-center gap-2 mb-3">
@@ -349,12 +326,6 @@ export const CreatorPage: React.FC = () => {
                   className="w-full h-full"
                 />
               </div>
-
-              <p className="text-center text-xs text-slate-400 mt-3">
-                {previewIsOpen
-                  ? '✨ 상자가 열렸습니다! 상자 닫기를 눌러 다시 닫을 수 있습니다.'
-                  : '👆 상자를 직접 탭해서 오픈 연출을 테스트해보세요!'}
-              </p>
             </div>
 
             {/* Large Generate Button */}
@@ -368,17 +339,6 @@ export const CreatorPage: React.FC = () => {
           </div>
         </div>
       </main>
-
-      {/* Floating Bottom Action for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/60 backdrop-blur-xl border-t border-white/10 lg:hidden z-30">
-        <button
-          onClick={handleGenerateLink}
-          className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-extrabold text-base shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2 active:scale-98"
-        >
-          <Send size={18} />
-          <span>비밀 선물 링크 생성하기 🎁</span>
-        </button>
-      </div>
 
       {/* Share Modal */}
       <ShareModal

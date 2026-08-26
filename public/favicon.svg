@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff4b4b" />
+      <stop offset="100%" stop-color="#c91818" />
+    </linearGradient>
+    <linearGradient id="lidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b6b" />
+      <stop offset="100%" stop-color="#d62828" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066" />
+      <stop offset="50%" stop-color="#fcc419" />
+      <stop offset="100%" stop-color="#e67700" />
+    </linearGradient>
+  </defs>
+  <!-- Box body -->
+  <rect x="20" y="42" width="60" height="46" rx="6" fill="url(#boxGrad)" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.3))" />
+  <!-- Vertical Ribbon -->
+  <rect x="44" y="42" width="12" height="46" fill="url(#goldGrad)" />
+  <!-- Box Lid -->
+  <rect x="15" y="32" width="70" height="14" rx="4" fill="url(#lidGrad)" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.2))" />
+  <rect x="44" y="32" width="12" height="14" fill="url(#goldGrad)" />
+  <!-- Ribbon Bow -->
+  <path d="M50 33 C40 18 24 22 36 33 C42 35 48 34 50 33 Z" fill="url(#goldGrad)" />
+  <path d="M50 33 C60 18 76 22 64 33 C58 35 52 34 50 33 Z" fill="url(#goldGrad)" />
+  <circle cx="50" cy="33" r="5" fill="#fcc419" />
+</svg>

@@ -22,7 +22,7 @@ export const ViewerPage: React.FC<ViewerPageProps> = ({ token }) => {
   // If token is invalid or decoding failed
   if (!payload) {
     return (
-      <div className="min-h-screen bg-[#0d0f1f] text-white flex flex-col items-center justify-center p-6 text-center">
+      <div className="h-[100dvh] min-h-[100dvh] bg-[#0d0f1f] text-white flex flex-col items-center justify-center p-6 text-center">
         <div className="w-20 h-20 rounded-3xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-4xl mb-4 shadow-xl">
           <AlertCircle className="text-red-400" size={36} />
         </div>
@@ -62,27 +62,27 @@ export const ViewerPage: React.FC<ViewerPageProps> = ({ token }) => {
 
   return (
     <div
-      className={`relative min-h-screen w-full overflow-hidden bg-gradient-to-b ${currentTheme.bgGradient} flex flex-col items-center justify-between p-4 select-none`}
+      className={`relative h-[100dvh] min-h-[100dvh] max-h-[100dvh] w-full overflow-hidden bg-gradient-to-b ${currentTheme.bgGradient} flex flex-col items-center justify-between p-3 select-none`}
     >
       {/* Roaming Screen-Bouncing Emojis when opened */}
       <RoamingIcons active={isOpen} mainEmoji={payload.e || '🎁'} />
 
       {/* Top Floating Badge */}
-      <div className="z-20 pt-4 flex flex-col items-center gap-1.5">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-xs font-semibold text-white/90 shadow-lg">
+      <div className="z-30 pt-3 flex flex-col items-center gap-1 shrink-0">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-xs font-semibold text-white/90 shadow-lg">
           <span>🎁</span>
           <span>도착한 선물</span>
         </div>
         {!isOpen && (
           <div className="flex items-center gap-1 text-[11px] text-amber-300/90 bg-amber-500/15 border border-amber-400/20 px-3 py-0.5 rounded-full animate-pulse">
-            <Volume2 size={12} />
+            <Volume2 size={11} />
             <span>볼륨을 켜면 더 재밌어요!</span>
           </div>
         )}
       </div>
 
-      {/* 3D Gift Box Stage (Centered) */}
-      <div className="relative w-full max-w-md h-[60vh] max-h-[550px] flex items-center justify-center my-auto z-10">
+      {/* 3D Gift Box Stage (Flex-1 ensures perfect scaling without overflowing mobile) */}
+      <div className="relative w-full flex-1 min-h-0 flex items-center justify-center z-10 my-1">
         <GiftBox3D
           text={payload.t}
           subText={payload.s}
@@ -98,24 +98,24 @@ export const ViewerPage: React.FC<ViewerPageProps> = ({ token }) => {
       </div>
 
       {/* Bottom Action Bar (Appears after open) */}
-      <div className="z-20 w-full max-w-sm pb-6 transition-all duration-500">
+      <div className="z-40 w-full max-w-sm pb-4 px-2 shrink-0 transition-all duration-500">
         {isOpen ? (
-          <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex flex-col gap-2.5 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Create My Own CTA */}
             <a
               href="#/"
               onClick={playClick}
-              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-black font-extrabold text-base shadow-2xl shadow-yellow-500/30 flex items-center justify-center gap-2 text-center transition-all active:scale-98 cursor-pointer"
+              className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-black font-extrabold text-sm sm:text-base shadow-2xl shadow-yellow-500/30 flex items-center justify-center gap-2 text-center transition-all active:scale-98 cursor-pointer"
             >
               <PlusCircle size={18} />
               <span>나도 비밀 선물 만들기 🎁</span>
             </a>
 
             {/* Secondary Actions */}
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={handleReplay}
-                className="flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-xs font-semibold text-white transition-all active:scale-95 cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-xs font-semibold text-white transition-all active:scale-95 cursor-pointer"
               >
                 <RotateCcw size={14} />
                 <span>다시 열기</span>
@@ -123,7 +123,7 @@ export const ViewerPage: React.FC<ViewerPageProps> = ({ token }) => {
 
               <button
                 onClick={handleCopyLink}
-                className={`flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl text-xs font-semibold transition-all active:scale-95 cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all active:scale-95 cursor-pointer ${
                   copied
                     ? 'bg-emerald-500 text-white'
                     : 'bg-white/10 hover:bg-white/15 border border-white/10 text-white'

@@ -78,7 +78,7 @@ export const CreatorPage: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b ${currentTheme.bgGradient} text-white transition-colors duration-500 py-6 sm:py-8`}>
+    <div className={`h-[100dvh] min-h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-b ${currentTheme.bgGradient} text-white transition-colors duration-500 py-6 sm:py-8`}>
       {/* Roaming Icons when preview is opened */}
       <RoamingIcons active={previewIsOpen} mainEmoji={selectedEmoji} />
 
